@@ -17,8 +17,8 @@ public class CustomerController {
     @Autowired
     private VipService vipService;
 
-    @RequestMapping(value="/login", method= RequestMethod.POST)
-    @ResponseBody
+//    @RequestMapping(value="/login", method= RequestMethod.POST)
+//    @ResponseBody
     public Map<String, Object> postLogin(String phone, String password, HttpSession session) {
         Map<String, Object> map = vipService.login(phone, password);
         if ((boolean)map.get("success")) {

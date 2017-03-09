@@ -2,6 +2,7 @@ package nju.adrien.service.impl;
 
 import nju.adrien.dao.VipDao;
 import nju.adrien.model.VipInfo;
+import nju.adrien.repository.HotelRepository;
 import nju.adrien.util.exception.MyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,9 @@ public class VipServiceImpl implements VipService {
 
     @Autowired
     private VipDao vipDao;
+
+    @Autowired
+    private HotelRepository hotelRepository;
 
     @Override
     public Map<String, Object> register(String name, String phone, String password, String passwordAgain) {

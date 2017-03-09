@@ -57,7 +57,7 @@ public class Hotel {
         this.phone = phone;
     }
 
-    @OneToMany(mappedBy = "hid", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "hid", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     public Set<HotelPlan> getHotelPlan() {
         return hotelPlan;
     }

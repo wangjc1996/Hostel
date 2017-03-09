@@ -30,7 +30,7 @@
                 </h3>
                 <%--<a href="${pageContext.request.contextPath}/register" class="right-floated register"><i class="fa fa-sign-in"></i> 立即注册</a>--%>
                 <div class="clearfix"></div>
-                <form class="login-form">
+                <form class="login-form" action="/login">
                     <input class="input-login" type="text" name="phone" placeholder="卡号/手机号"/>
                     <input class="input-password" type="password" name="password" placeholder="密码"/>
                     <input type="checkbox" id="js-checkbox-remember"/> 记住我
