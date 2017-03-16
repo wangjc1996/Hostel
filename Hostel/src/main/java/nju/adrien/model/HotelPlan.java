@@ -14,6 +14,7 @@ import java.sql.Date;
 @Entity
 @Table(name = "hotel_plan", schema = "hostel")
 public class HotelPlan implements Serializable {
+    private String planid;
     private String hid;
     private Date date;
     private String type;
@@ -21,6 +22,15 @@ public class HotelPlan implements Serializable {
     private int available;
 
     @Id
+    @Column(name = "planid")
+    public String getPlanid() {
+        return planid;
+    }
+
+    public void setPlanid(String planid) {
+        this.planid = planid;
+    }
+
     @Column(name = "hid")
     public String getHid() {
         return hid;
@@ -30,7 +40,6 @@ public class HotelPlan implements Serializable {
         this.hid = hid;
     }
 
-    @Id
     @Column(name = "date")
     public Date getDate() {
         return date;
@@ -40,7 +49,6 @@ public class HotelPlan implements Serializable {
         this.date = date;
     }
 
-    @Id
     @Column(name = "type")
     public String getType() {
         return type;
@@ -71,7 +79,8 @@ public class HotelPlan implements Serializable {
     @Override
     public String toString() {
         return "HotelPlan{" +
-                "hid='" + hid + '\'' +
+                "planid='" + planid + '\'' +
+                ", hid='" + hid + '\'' +
                 ", date=" + date +
                 ", type='" + type + '\'' +
                 ", price=" + price +

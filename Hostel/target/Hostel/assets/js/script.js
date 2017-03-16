@@ -1,7 +1,7 @@
 $(document).ready(function () {
-    adminLightItem();
-    datePicker();
-    navbarLeftItems();
+    // adminLightItem();
+    // datePicker();
+    // navbarLeftItems();
 });
 
 

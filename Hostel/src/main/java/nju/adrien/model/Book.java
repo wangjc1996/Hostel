@@ -14,11 +14,10 @@ import java.sql.Date;
 public class Book {
     private String bookid;
     private String vid;
-    private String hid;
-    private Date date;
-    private String type;
+    private String planid;
     private int checkin;
     private double pay;
+    private String names;
 
     @Id
     @Column(name = "bookid")
@@ -39,31 +38,13 @@ public class Book {
         this.vid = vid;
     }
 
-    @Column(name = "hid")
-    public String getHid() {
-        return hid;
+    @Column(name = "planid")
+    public String getPlanid() {
+        return planid;
     }
 
-    public void setHid(String hid) {
-        this.hid = hid;
-    }
-
-    @Column(name = "date")
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    @Column(name = "type")
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
+    public void setPlanid(String planid) {
+        this.planid = planid;
     }
 
     @Column(name = "checkin")
@@ -84,16 +65,24 @@ public class Book {
         this.pay = pay;
     }
 
+    @Column(name = "names")
+    public String getNames() {
+        return names;
+    }
+
+    public void setNames(String names) {
+        this.names = names;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
                 "bookid='" + bookid + '\'' +
                 ", vid='" + vid + '\'' +
-                ", hid='" + hid + '\'' +
-                ", date=" + date +
-                ", type='" + type + '\'' +
+                ", planid='" + planid + '\'' +
                 ", checkin=" + checkin +
                 ", pay=" + pay +
+                ", names='" + names + '\'' +
                 '}';
     }
 }

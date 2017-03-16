@@ -2,7 +2,7 @@
 <div class="footer">
     <div class="content">
         <div class="right-floated footer-content">
-            @Copyright 2017 Hostel
+            @Copyright 2017 HOSTEL
         </div>
     </div>
 </div>

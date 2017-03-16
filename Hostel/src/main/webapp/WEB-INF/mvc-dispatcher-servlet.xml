@@ -63,9 +63,6 @@
                 <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
 
                 <prop key="hibernate.c3p0.validate">true</prop>
-                <prop key="hibernate.connection.provider_class">
-                    org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider
-                </prop>
                 <prop key="hibernate.c3p0.min_size">5</prop>
                 <prop key="hibernate.c3p0.max_size">600</prop>
                 <prop key="hibernate.c3p0.timeout">1800</prop>

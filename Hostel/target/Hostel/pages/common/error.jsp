@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>错误 - 哆哆甜品屋</title>
+    <title>错误 - HOSTEL</title>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/favicon.ico">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/normalize.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/font-awesome.min.css">
@@ -17,7 +17,7 @@
 
     <div class="content">
         <div class="mid-panel validate-panel">
-            <p>您的账号已停止使用。</p>
+            <p>${msg.msg}</p>
         </div>
     </div>
 

@@ -12,6 +12,15 @@ public class VipLevel {
     private double balance;
     private double integration;
     private Date time;
+    private int point;
+
+    public void defaultValue() {
+        level = "普通会员";
+        discount = 0.9;
+        balance = 0;
+        integration = 0;
+        point = 0;
+    }
 
     @Id
     @Column(name = "vid")
@@ -68,6 +77,15 @@ public class VipLevel {
         this.time = time;
     }
 
+    @Column(name = "point")
+    public int getPoint() {
+        return point;
+    }
+
+    public void setPoint(int point) {
+        this.point = point;
+    }
+
     @Override
     public String toString() {
         return "VipLevel{" +
@@ -77,6 +95,7 @@ public class VipLevel {
                 ", balance=" + balance +
                 ", integration=" + integration +
                 ", time=" + time +
+                ", point=" + point +
                 '}';
     }
 }

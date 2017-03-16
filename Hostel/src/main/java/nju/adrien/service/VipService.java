@@ -6,12 +6,18 @@ import java.util.Map;
 
 public interface VipService {
 
-    Map<String, Object> register(String name, String phone, String password, String passwordAgain);
+    Map<String, Object> register(String name, String phone, String password, String passwordAgain, String bankid, String bankPassword);
 
     Map<String, Object> login(String phone, String password);
 
-    VipInfo getVipById(String id);
+    Map<String, Object> confirm(String vid, String password);
 
-    Map<String, Object> password(int id, String old, String password, String passwordAgain);
+    VipInfo getVipById(String vid);
+
+    Map<String, Object> password(String vid, String old, String password, String passwordAgain);
+
+    void statusRecheck(String vid);
+
+    Map<String, Object> stop(String vid);
 
 }

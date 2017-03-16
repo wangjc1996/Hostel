@@ -10,8 +10,13 @@ public class VipInfo {
     private String phone;
     private String state;
     private String password;
+    private String bankid;
 
     private VipLevel level;
+
+    public void defaultValue() {
+        state = "invalid";
+    }
 
     @Id
     @Column(name = "vid")
@@ -59,6 +64,15 @@ public class VipInfo {
         this.password = password;
     }
 
+    @Column(name = "bankid")
+    public String getBankid() {
+        return bankid;
+    }
+
+    public void setBankid(String bankid) {
+        this.bankid = bankid;
+    }
+
     @OneToOne
     @JoinColumn(name = "vid")
     public VipLevel getLevel() {
@@ -77,7 +91,8 @@ public class VipInfo {
                 ", phone='" + phone + '\'' +
                 ", state='" + state + '\'' +
                 ", password='" + password + '\'' +
-                ", level=\n" + level + "\n" +
+                ", bankid='" + bankid + '\'' +
+                ", level=" + level +
                 '}';
     }
 }

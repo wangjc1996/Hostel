@@ -2,13 +2,11 @@ package nju.adrien.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Date;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by Vboar on 2016/2/22.
- */
 public class Utils {
 
     public static boolean isMobileNumber(String phone) {
@@ -42,11 +40,7 @@ public class Utils {
         }
     }
 
-    public static int generateCode() {
-        int min = 1000000;
-        int max = 9999999;
-        Random random = new Random();
-        return random.nextInt(max)%(max-min+1) + min;
+    public static boolean compareTime(Date record, Date current){
+        return record.before(current);
     }
-
 }

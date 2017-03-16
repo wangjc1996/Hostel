@@ -49,30 +49,27 @@
                 <prop key="hibernate.connection.username">root</prop>
                 <prop key="hibernate.connection.password">123456</prop>
 
-                <!--<prop key="hibernate.show_sql">false</prop>-->
-                <!--<prop key="hibernate.connection.useUnicode">true</prop>-->
-                <!--<prop key="hibernate.connection.characterEncoding">UTF-8</prop>-->
-                <!--<prop key="hibernate.format_sql">true</prop>-->
-                <!--<prop key="hibernate.use_sql_comments">true</prop>-->
-                <!--<prop key="hibernate.hbm2ddl.auto">update</prop>-->
-                <!--<prop key="hibernate.connection.autoReconnect">true</prop>-->
-                <!--<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>-->
-                <!--<prop key="connection.autoReconnectForPools">true</prop>-->
-                <!--<prop key="connection.is-connection-validation-required">true</prop>-->
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.connection.useUnicode">true</prop>
+                <prop key="hibernate.connection.characterEncoding">UTF-8</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.use_sql_comments">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.connection.autoReconnect">true</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="connection.autoReconnectForPools">true</prop>
+                <prop key="connection.is-connection-validation-required">true</prop>
 
-                <!--<prop key="hibernate.enable_lazy_load_no_trans">true</prop>-->
+                <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
 
-                <!--<prop key="hibernate.c3p0.validate">true</prop>-->
-                <!--<prop key="hibernate.connection.provider_class">-->
-                    <!--org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider-->
-                <!--</prop>-->
-                <!--<prop key="hibernate.c3p0.min_size">5</prop>-->
-                <!--<prop key="hibernate.c3p0.max_size">600</prop>-->
-                <!--<prop key="hibernate.c3p0.timeout">1800</prop>-->
-                <!--<prop key="hibernate.c3p0.max_statements">50</prop>-->
-                <!--<prop key="hibernate.c3p0.preferredTestQuery">SELECT 1;</prop>-->
-                <!--<prop key="hibernate.c3p0.testConnectionOnCheckout">true</prop>-->
-                <!--<prop key="hibernate.c3p0.idle_test_period">3000</prop>-->
+                <prop key="hibernate.c3p0.validate">true</prop>
+                <prop key="hibernate.c3p0.min_size">5</prop>
+                <prop key="hibernate.c3p0.max_size">600</prop>
+                <prop key="hibernate.c3p0.timeout">1800</prop>
+                <prop key="hibernate.c3p0.max_statements">50</prop>
+                <prop key="hibernate.c3p0.preferredTestQuery">SELECT 1;</prop>
+                <prop key="hibernate.c3p0.testConnectionOnCheckout">true</prop>
+                <prop key="hibernate.c3p0.idle_test_period">3000</prop>
             </props>
         </property>
     </bean>
