@@ -46,7 +46,36 @@ public class BookServiceImpl implements BookService {
             bookVO.setDate(plan.getDate());
             bookVO.setType(plan.getType());
             bookVO.setPrice(book.getPay());
-            bookVO.setChenkin(book.getCheckin());
+            bookVO.setCheckin(book.getCheckin());
+
+            vos.add(bookVO);
+        }
+        return vos;
+    }
+
+    @Override
+    public List<BookVO> getBooksByPhone(String phone) {
+        VipInfo vip = vipInfoRepository.findByPhone(phone);
+        if (vip == null) {
+            return new ArrayList<BookVO>();
+        }
+        List<Book> list = bookRepository.findByVid(vip.getVid());
+        List<BookVO> vos = new ArrayList<>();
+        for (Book book : list) {
+            BookVO bookVO = new BookVO();
+            HotelPlan plan = hotelPlanRepository.findOne(book.getPlanid());
+            HotelInfo info = hotelInfoRepository.findOne(plan.getHid());
+
+            bookVO.setBookid(book.getBookid());
+            bookVO.setPlanid(book.getPlanid());
+            bookVO.setVid(book.getVid());
+            bookVO.setHid(plan.getHid());
+            bookVO.setHname(info.getName());
+            bookVO.setNames(book.getNames());
+            bookVO.setDate(plan.getDate());
+            bookVO.setType(plan.getType());
+            bookVO.setPrice(book.getPay());
+            bookVO.setCheckin(book.getCheckin());
 
             vos.add(bookVO);
         }
@@ -91,7 +120,7 @@ public class BookServiceImpl implements BookService {
                 bookVO.setDate(plan.getDate());
                 bookVO.setType(plan.getType());
                 bookVO.setPrice(book.getPay());
-                bookVO.setChenkin(book.getCheckin());
+                bookVO.setCheckin(book.getCheckin());
 
                 vos.add(bookVO);
             }
@@ -119,13 +148,32 @@ public class BookServiceImpl implements BookService {
             map.put("error", "房源不足！");
         } else {
             map.put("success", true);
-            //账户资金
+            //会员余额
             level.setBalance(level.getBalance() - book.getPrice());
             level.setIntegration(level.getIntegration() + book.getPrice());
             level.setPoint(level.getPoint() + (int) book.getPrice());
             vipLevelRepository.saveAndFlush(level);
             //新的订单
             Book model = book.toBook();
+            model.setBookid(NumberFormater.formatLongId(NumberFormater.string2Integer(bookRepository.getMaxBookid()) + 1));
+            bookRepository.saveAndFlush(model);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> bookCash(BookVO book) {
+        Map<String, Object> map = new HashMap<>();
+
+        if (!productService.subPlan(book.getPlanid())) {
+            //房源不足
+            map.put("success", false);
+            map.put("error", "房源不足！");
+        } else {
+            map.put("success", true);
+            //新的订单
+            Book model = book.toBook();
+            model.setPay(-1 * model.getPay());
             model.setBookid(NumberFormater.formatLongId(NumberFormater.string2Integer(bookRepository.getMaxBookid()) + 1));
             bookRepository.saveAndFlush(model);
         }
@@ -157,4 +205,10 @@ public class BookServiceImpl implements BookService {
         map.put("success", true);
         return map;
     }
+
+    @Override
+    public List<Book> getBooksByPlanid(String planid) {
+        return bookRepository.findByPlanid(planid);
+    }
+
 }

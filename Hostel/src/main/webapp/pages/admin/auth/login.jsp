@@ -18,7 +18,7 @@
                     <input class="input-username" type="text" name="username" placeholder="酒店编号" />
                     <input class="input-password" type="password" name="password" placeholder="密码" />
                     <input type="checkbox" id="js-checkbox-remember"/> 记住我
-                    <button type="button" class="button btn-login right-floated" onclick="loginForm()">登录</button>
+                    <button type="button" class="button btn-login right-floated" onclick="login()">登录</button>
                     <div class="clear-fix"></div>
                 </form>
             </div>
@@ -46,7 +46,7 @@
         }
     }
 
-    function loginForm() {
+    function login() {
         if ($("#js-checkbox-remember").prop("checked") == true) {
             window.localStorage.setItem("admin_remember", 1);
             window.localStorage.setItem("admin_login", $(".input-username").val());
@@ -68,7 +68,10 @@
                 } else {
                     toaster("登录成功！马上自动跳转...", "success");
                     setTimeout(function () {
-                        window.location.href = "/admin/plan";
+                        if (data["hid"] == null)
+                            window.location.href = "/admin/manager/vip";
+                        else
+                            window.location.href = "/admin/plan";
                     }, 1000);
                 }
             },
@@ -77,5 +80,6 @@
             }
         });
     }
+
 </script>
 </html>

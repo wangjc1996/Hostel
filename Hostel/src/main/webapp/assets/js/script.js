@@ -100,55 +100,6 @@ function planStatusTranslate(num) {
     }
 }
 
-function navbarLeftItems() {
-
-    var shopList;
-
-    $("#js-navbar-shop-select").text("选择门店： " + window.localStorage.getItem("shopName"));
-
-    $.ajax({
-        type: "POST",
-        url: "/getShops",
-        async: false,
-        success: function(data) {
-            shopList = data.shopList;
-            for (var i = 0; i < shopList.length; i++) {
-                $("#js-shop-panel > ul").append('<li shopId="' + shopList[i].id + '">' + shopList[i].name + '</li>');
-            }
-        },
-        error: function() {
-            toaster("服务器出现问题，请稍微再试！", "error");
-        }
-    });
-
-    var open = false;
-    $("#js-navbar-shop-select").click(function() {
-        if (open == false) {
-            open = true;
-            $("#js-shop-panel").show();
-        } else {
-            open = false;
-            $("#js-shop-panel").hide();
-        }
-    });
-    $("#js-shop-panel").find("li").each(function() {
-        $(this).click(function() {
-            open = false;
-            $("#js-shop-panel").hide();
-            $("#js-navbar-shop-select").text("选择门店： " + $(this).text());
-            window.localStorage.setItem("shopId",  $(this).attr("shopId"));
-            window.localStorage.setItem("shopName", $(this).text());
-
-            try {
-                loadProducts();
-            } catch (e) {
-
-            }
-
-        });
-    });
-}
-
 function getCustomerStatus(status) {
     switch (status) {
         case 0: return '未激活';

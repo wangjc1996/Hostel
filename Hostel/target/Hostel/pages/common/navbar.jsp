@@ -20,11 +20,11 @@
             <c:if test="${sessionScope.get('role') != 5}">
                 <li class="spacer"></li>
                 <c:choose>
-                    <c:when test="${sessionScope.get('id') == null}">
-                        <li><a href="${pageContext.request.contextPath}/admin/login">商家登入</a></li>
+                    <c:when test="${sessionScope.get('hid') == null}">
+                        <li><a href="${pageContext.request.contextPath}/admin/login">后台登入</a></li>
                     </c:when>
                     <c:otherwise>
-                        <li><a href="${pageContext.request.contextPath}/admin">返回后台</a></li>
+                        <li><a href="${pageContext.request.contextPath}/admin/plan">返回后台</a></li>
                     </c:otherwise>
                 </c:choose>
             </c:if>

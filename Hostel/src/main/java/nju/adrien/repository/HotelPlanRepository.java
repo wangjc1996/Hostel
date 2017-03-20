@@ -1,7 +1,6 @@
 package nju.adrien.repository;
 
 import nju.adrien.model.HotelPlan;
-import nju.adrien.model.VipInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -22,5 +21,8 @@ public interface HotelPlanRepository extends JpaRepository<HotelPlan, String> {
     HotelPlan findRepeat(String hid, Date date, String type);
 
     @Query("select a from HotelPlan a where a.hid = ?1 and a.date = ?2")
-    List<HotelPlan>  findByHidDate(String hid, Date date);
+    List<HotelPlan> findByHidDate(String hid, Date date);
+
+    @Query("select a.planid from HotelPlan a where a.hid = ?1 and Year(a.date) =  ?2 and Month(a.date) =  ?3")
+    List<String> getIdsByMonth(String hid, int year, int month);
 }

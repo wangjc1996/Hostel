@@ -152,6 +152,11 @@ public class AccountServiceImpl implements VipService {
     }
 
     @Override
+    public VipInfo getVipByPhone(String phone) {
+        return vipInfoRepository.findByPhone(phone);
+    }
+
+    @Override
     public Map<String, Object> password(String vid, String old, String password, String passwordAgain) {
         Map<String, Object> map = new HashMap<>();
 

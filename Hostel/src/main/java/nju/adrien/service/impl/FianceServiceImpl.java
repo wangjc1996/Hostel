@@ -1,18 +1,16 @@
 package nju.adrien.service.impl;
 
 import nju.adrien.model.Bank;
-import nju.adrien.model.Book;
+import nju.adrien.model.HotelInfo;
 import nju.adrien.model.VipInfo;
 import nju.adrien.model.VipLevel;
 import nju.adrien.repository.BankRepository;
-import nju.adrien.repository.BookRepository;
+import nju.adrien.repository.HotelInfoRepository;
 import nju.adrien.repository.VipInfoRepository;
 import nju.adrien.repository.VipLevelRepository;
 import nju.adrien.service.FianceService;
-import nju.adrien.service.ProductService;
 import nju.adrien.util.NumberFormater;
 import nju.adrien.util.Utils;
-import nju.adrien.vo.BookVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +27,8 @@ public class FianceServiceImpl implements FianceService {
     private VipLevelRepository vipLevelRepository;
     @Autowired
     private BankRepository bankRepository;
+    @Autowired
+    private HotelInfoRepository hotelInfoRepository;
 
     @Override
     public Bank getBank(String vid) {
@@ -38,8 +38,11 @@ public class FianceServiceImpl implements FianceService {
 
     @Override
     public boolean bankOccupy(String bankid) {
-        VipInfo info = vipInfoRepository.findByBankid(bankid);
-        return info != null;
+        VipInfo vipInfo = vipInfoRepository.findByBankid(bankid);
+        HotelInfo hotel = hotelInfoRepository.findByBankid(bankid);
+        if (vipInfo == null && hotel == null)
+            return false;
+        return true;
     }
 
     @Override
@@ -86,7 +89,6 @@ public class FianceServiceImpl implements FianceService {
         }
 
         info.setState("valid");
-        bank.setBalance(bank.getBalance() - amount);
         VipLevel viplevel = info.getLevel();
         viplevel.setBalance(viplevel.getBalance() + amount);
         viplevel.setLevel(level);
@@ -99,8 +101,8 @@ public class FianceServiceImpl implements FianceService {
 
 
         vipInfoRepository.saveAndFlush(info);
-        bankRepository.saveAndFlush(bank);
         vipLevelRepository.saveAndFlush(viplevel);
+        this.transMoney(bank.getBankid(), this.admin, amount);
         return map;
     }
 
@@ -150,7 +152,6 @@ public class FianceServiceImpl implements FianceService {
         }
 
         info.setState("valid");
-        bank.setBalance(bank.getBalance() - amount);
         VipLevel viplevel = info.getLevel();
         viplevel.setBalance(viplevel.getBalance() + amount);
         viplevel.setLevel(level);
@@ -168,9 +169,36 @@ public class FianceServiceImpl implements FianceService {
         viplevel.setTime(date);
 
         vipInfoRepository.saveAndFlush(info);
-        bankRepository.saveAndFlush(bank);
         vipLevelRepository.saveAndFlush(viplevel);
+        this.transMoney(bank.getBankid(), this.admin, amount);
+        map.put("success", true);
+        return map;
+    }
 
+    @Override
+    public Map<String, Object> transMoney(String fromBankid, String toBankid, double amount) {
+        Map<String, Object> map = new HashMap<>();
+        Bank fromBank = bankRepository.findOne(fromBankid);
+        Bank toBank = bankRepository.findOne(toBankid);
+
+        if (fromBank == null) {
+            map.put("success", false);
+            map.put("error", "来源账户信息错误！");
+            return map;
+        } else if (toBank == null) {
+            map.put("success", false);
+            map.put("error", "目标账户信息错误！");
+            return map;
+        }
+        if (fromBank.getBalance() < amount) {
+            map.put("success", false);
+            map.put("error", "来源账户余额不足！");
+            return map;
+        }
+        fromBank.setBalance(NumberFormater.doubleStander(fromBank.getBalance() - amount));
+        toBank.setBalance(NumberFormater.doubleStander(toBank.getBalance() + amount));
+        bankRepository.saveAndFlush(fromBank);
+        bankRepository.saveAndFlush(toBank);
         map.put("success", true);
         return map;
     }

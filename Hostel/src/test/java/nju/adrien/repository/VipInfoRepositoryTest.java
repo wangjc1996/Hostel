@@ -14,6 +14,10 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml"})
 public class VipInfoRepositoryTest {
+    @Test
+    public void findByPhone1() throws Exception {
+        System.out.println(vipInfoRepository.findByPhone("185"));
+    }
 
     @Autowired
     private VipInfoRepository vipInfoRepository;

@@ -1,6 +1,7 @@
 package nju.adrien.controller;
 
 import nju.adrien.service.HotelService;
+import nju.adrien.service.ManagerService;
 import nju.adrien.service.VipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,8 @@ public class AuthorityController {
     private VipService vipService;
     @Autowired
     private HotelService hotelService;
+    @Autowired
+    private ManagerService managerService;
 
     /**
      * 请求登录界面:显示LoginPage
@@ -33,7 +36,7 @@ public class AuthorityController {
     }
 
     /**
-     * 店家登陆
+     * 后台登陆
      * @return
      */
     @RequestMapping(value="/admin/login", method= RequestMethod.GET)
@@ -42,18 +45,23 @@ public class AuthorityController {
     }
 
     /**
-     * 店家登陆
+     * 后台登陆
      * @return
      */
     @RequestMapping(value="/admin/login", method= RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> postAdminLogin(String username, String password, HttpSession session) {
-        Map<String, Object> map = hotelService.login(username, password);
-        if ((boolean)map.get("success")) {
-            session.setAttribute("hid", map.get("hid"));
-            session.setAttribute("hname", map.get("hname"));
+        Map<String, Object> hotelMap = hotelService.login(username, password);
+        if ((boolean)hotelMap.get("success")) {
+            session.setAttribute("hid", hotelMap.get("hid"));
+            session.setAttribute("hname", hotelMap.get("hname"));
+            return hotelMap;
         }
-        return map;
+        Map<String, Object> managerMap = managerService.login(username, password);
+        if ((boolean)managerMap.get("success")) {
+            session.setAttribute("admin", "admin");
+        }
+        return managerMap;
     }
 
     /**

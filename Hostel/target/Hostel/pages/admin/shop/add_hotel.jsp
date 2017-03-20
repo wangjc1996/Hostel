@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>新增店面 - 店面管理 - 管理后台 - 哆哆甜品屋</title>
+    <title>申请开店 - HOSTEL</title>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/favicon.ico">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/normalize.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/font-awesome.min.css">
@@ -11,26 +11,29 @@
 </head>
 <body class="admin-body">
 
-<%@include file="../../common/admin_navbar.jsp"%>
+<%@include file="../../common/admin_navbar.jsp" %>
 <div class="wrapper">
     <div class="content">
         <div class="admin-panel">
-            <h3 class="title">新增店面</h3>
-            <label for="js-name-input" class="normal-input-label">店面名称</label>
-            <input type="text" class="normal-input" id="js-name-input" />
-            <label for="js-desc-textarea" class="normal-input-label">店面描述</label>
-            <textarea class="normal-textarea" id="js-desc-textarea" rows=5></textarea>
+            <h3 class="title">申请开店</h3>
+            <label for="js-name-input" class="normal-input-label">酒店名称</label>
+            <input type="text" class="normal-input" id="js-name-input"/>
             <label for="js-addr-input" class="normal-input-label">店面地址</label>
-            <input type="text" class="normal-input" id="js-addr-input" />
+            <input type="text" class="normal-input" id="js-addr-input"/>
+            <label for="js-phone-input" class="normal-input-label">联系电话</label>
+            <input type="text" class="normal-input" id="js-phone-input"/>
+            <label for="js-bankid-input" class="normal-input-label">银行账户（提交不可改）</label>
+            <input type="text" class="normal-input" id="js-bankid-input"/>
+            <label for="js-bankpsd-input" class="normal-input-label">银行密码</label>
+            <input type="password" class="normal-input" id="js-bankpsd-input"/>
             <div class="button-group right-floated">
-                <button class="button btn-cancel" onclick="window.location.href='/admin/shop'">返回</button>
                 <button class="button btn-submit" onclick="submit()">提交</button>
             </div>
             <div class="clear-fix"></div>
         </div>
     </div>
 </div>
-<%@include file="/pages/common/toaster.jsp"%>
+<%@include file="/pages/common/toaster.jsp" %>
 </body>
 
 <style>
@@ -39,29 +42,31 @@
     }
 </style>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 
     });
     function submit() {
         $.ajax({
             type: "POST",
-            url: "/admin/shop/add",
+            url: "/admin/hotel/add",
             data: {
                 name: $("#js-name-input").val(),
-                description: $("#js-desc-textarea").val(),
-                address: $("#js-addr-input").val()
+                location: $("#js-addr-input").val(),
+                phone: $("#js-phone-input").val(),
+                bankid: $("#js-bankid-input").val(),
+                bankpsd: $("#js-bankpsd-input").val()
             },
-            success: function(data) {
+            success: function (data) {
                 if (data["success"] == false) {
                     toaster(data["error"], "error");
                 } else {
-                    toaster("新增成功~", "success");
+                    toaster("申请成功，待管理员审核", "success");
                     setTimeout(function () {
-                        window.location.href = "/admin/shop";
+                        window.location.href = "/admin/plan";
                     }, 1000);
                 }
             },
-            error: function() {
+            error: function () {
                 toaster("服务器出现问题，请稍微再试！", "error");
             }
         });

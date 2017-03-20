@@ -23,8 +23,6 @@ import java.util.Map;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    private HotelRepository hotelRepository;
-    @Autowired
     private HotelInfoRepository hotelInfoRepository;
     @Autowired
     private HotelPlanRepository hotelPlanRepository;
@@ -67,7 +65,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean subPlan(String planid) {
+    public synchronized boolean subPlan(String planid) {
         HotelPlan plan = this.getPlan(planid);
         if (plan.getAvailable() == 0) {
             return false;
@@ -79,7 +77,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean addPlan(String planid) {
+    public synchronized boolean addPlan(String planid) {
         HotelPlan plan = this.getPlan(planid);
         plan.setAvailable(plan.getAvailable() + 1);
         hotelPlanRepository.saveAndFlush(plan);

@@ -17,10 +17,20 @@ public class NumberFormater {
         return df_int.format(input);
     }
 
+    /**
+     * 7位
+     * @param input
+     * @return
+     */
     public static String formatId(int input) {
         return df_id.format(input);
     }
 
+    /**
+     * 12位
+     * @param input
+     * @return
+     */
     public static String formatLongId(int input) {
         return df_bookid.format(input);
     }

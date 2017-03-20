@@ -49,8 +49,10 @@
 <script>
     $(document).ready(function () {
         noBook();
+        getAllBook();
     });
 
+    //查找空余房间
     function noBook() {
         $.ajax({
             type: "POST",
@@ -70,6 +72,7 @@
 
     }
 
+    //模糊查找订单
     function getBook() {
         $.ajax({
             type: "POST",
@@ -91,6 +94,7 @@
         });
     }
 
+    //今日所有订单
     function getAllBook() {
         $.ajax({
             type: "POST",
@@ -109,6 +113,7 @@
         });
     }
 
+    //订单数据
     function loadData(bookList) {
         $("#item-container").empty();
         var html = "";
@@ -132,12 +137,12 @@
             var price = book.price;
             var isPaid = "未支付";
             var checkin = "未入住";
-            var button = '<button class="button btn-edit" onclick="cash(this)">现金入住</button>';
+            var button = '<button class="button btn-edit" onclick="vipCashCheckin(' + book.bookid + ')">现金入住</button>';
             if (price < 0) {
                 price = -price;
             } else {
                 isPaid = "已支付";
-                button = '<button class="button btn-edit" onclick="cash(this)">办理入住</button>';
+                button = '<button class="button btn-edit" onclick="vipCheckin(' + book.bookid + ')">办理入住</button>';
             }
             if (book.checkin > 0) {
                 checkin = "已入住";
@@ -162,6 +167,7 @@
         $("#item-container").append(html);
     }
 
+    //空余房间数据
     function loadAvail(availList) {
         $("#avail-container").empty();
         var html = "";
@@ -181,7 +187,7 @@
             var plan = availList[i];
             var button = '';
             if (plan.available > 0) {
-                button = '<button class="button btn-edit" onclick="cash(this)">立即入住</button>';
+                button = '<button class="button btn-edit" onclick="nonVipPage(' + plan.planid + ')">立即入住</button>';
             }
 
             html += '<tr>' +
@@ -199,5 +205,64 @@
                 '<div class="clear-fix"></div>';
         $("#avail-container").append(html);
     }
+
+    //已预定，现金支付
+    function vipCashCheckin(bookid) {
+        var flag = confirm("确认已支付现金并入住？");
+        if (flag == true) {
+            $.ajax({
+                type: "POST",
+                url: "/admin/hall/vipCashCheckin",
+                data: {
+                    bookid: bookid,
+                },
+                success: function (data) {
+                    if (data["success"] == false) {
+                        toaster(data["error"], "error");
+                    } else {
+                        toaster("入住成功~", "success");
+                        setTimeout(function () {
+                            window.location.href = "/admin/hall";
+                        }, 1000);
+                    }
+                },
+                error: function () {
+                    toaster("服务器出现问题，请稍微再试！", "error");
+                }
+            });
+        }
+    }
+
+    //已预定并支付，直接入住
+    function vipCheckin(bookid) {
+        var flag = confirm("确认入住？");
+        if (flag == true) {
+            $.ajax({
+                type: "POST",
+                url: "/admin/hall/vipCheckin",
+                data: {
+                    bookid: bookid,
+                },
+                success: function (data) {
+                    if (data["success"] == false) {
+                        toaster(data["error"], "error");
+                    } else {
+                        toaster("入住成功~", "success");
+                        setTimeout(function () {
+                            window.location.href = "/admin/hall";
+                        }, 1000);
+                    }
+                },
+                error: function () {
+                    toaster("服务器出现问题，请稍微再试！", "error");
+                }
+            });
+        }
+    }
+
+    function nonVipPage(planid) {
+        window.location.href = "/admin/hall/nonVipCheckin?planid=" + planid;
+    }
+
 </script>
 </html>

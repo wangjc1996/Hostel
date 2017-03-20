@@ -35,7 +35,7 @@
                     <div class="normal-div">价格（折后）： ${book.price}</div>
                     <input class="normal-div input-password" type="password" name="password" placeholder="输入会员密码"/>
                     <button type="button" class="button btn-register right-floated" onclick="payVip()">会员卡支付</button>
-                    <button type="button" class="button btn-register left-floated" onclick="noPay()">入住现金支付</button>
+                    <button type="button" class="button btn-register left-floated" onclick="cash()">入住现金支付</button>
                     <div class="clear-fix"></div>
                 </form>
             </div>
@@ -60,7 +60,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/pay/book",
+            url: "/pay/book/vip",
             data: {
                 planid: ${book.planid},
                 names: '${book.names}',
@@ -82,8 +82,28 @@
         });
     }
 
-    function noPay() {
-        //TODO
+    function cash() {
+        $.ajax({
+            type: "POST",
+            url: "/pay/book/cash",
+            data: {
+                planid: ${book.planid},
+                names: '${book.names}',
+            },
+            success: function (data) {
+                if (data["success"] == false) {
+                    toaster(data["error"], "error");
+                } else {
+                    toaster("预定成功！马上自动跳转...", "success");
+                    setTimeout(function () {
+                        window.location.href = "/";
+                    }, 1000);
+                }
+            },
+            error: function () {
+                toaster("服务器出现问题，请稍微再试！", "error");
+            }
+        });
     }
 </script>
 </html>

@@ -4,9 +4,6 @@ import nju.adrien.model.Book;
 
 import java.sql.Date;
 
-/**
- * Created by JiachenWang on 2017/3/14.
- */
 public class BookVO {
 
     private String bookid;
@@ -18,7 +15,7 @@ public class BookVO {
     private Date date;
     private String type;
     private double price;
-    private int chenkin;
+    private int checkin;
 
     public String getBookid() {
         return bookid;
@@ -92,19 +89,20 @@ public class BookVO {
         this.price = price;
     }
 
-    public int getChenkin() {
-        return chenkin;
+    public int getCheckin() {
+        return checkin;
     }
 
-    public void setChenkin(int chenkin) {
-        this.chenkin = chenkin;
+    public void setCheckin(int checkin) {
+        this.checkin = checkin;
     }
 
     /**
      * 没有设置bookid
+     *
      * @return
      */
-    public Book toBook(){
+    public Book toBook() {
         Book book = new Book();
         book.setVid(vid);
         book.setPlanid(planid);
@@ -126,7 +124,7 @@ public class BookVO {
                 ", date=" + date +
                 ", type='" + type + '\'' +
                 ", price=" + price +
-                ", chenkin=" + chenkin +
+                ", checkin=" + checkin +
                 '}';
     }
 }

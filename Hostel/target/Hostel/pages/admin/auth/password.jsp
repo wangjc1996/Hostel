@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>修改密码 - 管理后台 - 哆哆甜品屋</title>
+    <title>修改密码 - HOSTEL</title>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/favicon.ico">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/normalize.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/font-awesome.min.css">
@@ -56,9 +56,9 @@
                 } else {
                     toaster("修改密码成功~", "success");
                 }
-                $("#js-old-input").val("");
-                $("#js-new-input").val("");
-                $("#js-again-input").val("");
+                setTimeout(function () {
+                    window.location.href = "/admin/password";
+                }, 1000);
             },
             error: function() {
                 toaster("服务器出现问题，请稍微再试！", "error");

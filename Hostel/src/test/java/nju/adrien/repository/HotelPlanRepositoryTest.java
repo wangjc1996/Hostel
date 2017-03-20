@@ -11,6 +11,10 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml"})
 public class HotelPlanRepositoryTest {
+    @Test
+    public void getIdsByMonth() throws Exception {
+        System.out.println(hotelPlanRepository.getIdsByMonth("1000001", 2017, 9));
+    }
 
     @Autowired
     private HotelPlanRepository hotelPlanRepository;

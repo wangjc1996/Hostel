@@ -361,11 +361,18 @@ a {
 }
 
 .product-card > .product-img {
-    width: 140px;
-    height: 140px;
+     width: 140px;
+     height: 140px;
+     display: block;
+     margin: 0 auto;
+     border: 1px solid #eee;
+ }
+
+.product-card > .room-img {
+    width: 90px;
+    height: 90px;
     display: block;
     margin: 0 auto;
-    border: 1px solid #eee;
 }
 
 .product-card > .product-name {

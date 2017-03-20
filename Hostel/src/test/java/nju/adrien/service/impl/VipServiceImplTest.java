@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.sql.Date;
+
 /**
  * Created by JiachenWang on 2017/3/9.
  */
@@ -14,17 +16,20 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml"})
 public class VipServiceImplTest {
 
-    @Autowired
-    VipService vipService;
+//    @Autowired
+//    VipService vipService;
 
     @Test
     public void register() throws Exception {
 //        System.out.println(vipService.register("王成昆", "18525550880", "123456", "123456"));
+        Date date = new Date(System.currentTimeMillis());
+        System.out.println(date.getYear() + 1900);
+        System.out.println(date.getMonth() + 1);
     }
 
     @Test
     public void login() throws Exception {
-        System.out.println(vipService.login("18525550880", "123456"));
+//        System.out.println(vipService.login("18525550880", "123456"));
     }
 
     @Test

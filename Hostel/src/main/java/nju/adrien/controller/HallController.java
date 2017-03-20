@@ -2,7 +2,9 @@ package nju.adrien.controller;
 
 import nju.adrien.model.HotelPlan;
 import nju.adrien.service.BookService;
+import nju.adrien.service.HallService;
 import nju.adrien.service.HotelService;
+import nju.adrien.util.NumberFormater;
 import nju.adrien.vo.BookVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,8 @@ public class HallController {
     private BookService bookService;
     @Autowired
     private HotelService hotelService;
+    @Autowired
+    private HallService hallService;
 
     // 已预订的销售页面
     @RequestMapping(value = "/admin/hall", method = RequestMethod.GET)
@@ -72,4 +76,34 @@ public class HallController {
 
         return map;
     }
+
+    // 会员已预定未支付，现金入住
+    @RequestMapping(value = "/admin/hall/vipCashCheckin", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> vipCashCheckin(String bookid) {
+        return hallService.vipCashCheckin(NumberFormater.formatLongId(NumberFormater.string2Integer(bookid)));
+    }
+
+    // 会员已预定并支付，直接入住
+    @RequestMapping(value = "/admin/hall/vipCheckin", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> vipCheckin(String bookid) {
+        return hallService.vipCheckin(NumberFormater.formatLongId(NumberFormater.string2Integer(bookid)));
+    }
+
+    // 非会员现金入住界面
+    @RequestMapping(value = "/admin/hall/nonVipCheckin", method = RequestMethod.GET)
+    public ModelAndView nonVipCheckinPage(String planid) {
+        ModelAndView modelAndView = new ModelAndView("admin/hall/non_vip");
+        modelAndView.addObject("plan", hotelService.getPlan(planid));
+        return modelAndView;
+    }
+
+    // 非会员现金入住
+    @RequestMapping(value = "/admin/hall/nonVipCheckin", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> nonVipCheckin(String planid, String names) {
+        return hallService.nonVipCheckin(planid, names);
+    }
+
 }

@@ -1,16 +1,19 @@
 package nju.adrien.service.impl;
 
-import nju.adrien.model.HotelInfo;
-import nju.adrien.model.HotelPlan;
-import nju.adrien.repository.HotelInfoRepository;
-import nju.adrien.repository.HotelPlanRepository;
+import nju.adrien.model.*;
+import nju.adrien.repository.*;
+import nju.adrien.service.BookService;
+import nju.adrien.service.FianceService;
 import nju.adrien.service.HotelService;
 import nju.adrien.util.NumberFormater;
 import nju.adrien.util.Utils;
+import nju.adrien.vo.FinanceVO;
+import nju.adrien.vo.StatisticVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +25,18 @@ public class HotelServiceImpl implements HotelService {
     private HotelInfoRepository hotelInfoRepository;
     @Autowired
     private HotelPlanRepository hotelPlanRepository;
+    @Autowired
+    private ApplyRepository applyRepository;
+    @Autowired
+    private BankRepository bankRepository;
+    @Autowired
+    private BookRepository bookRepository;
+    @Autowired
+    private CashRepository cashRepository;
+    @Autowired
+    private FianceService fianceService;
+    @Autowired
+    private BookService bookService;
 
     @Override
     public Map<String, Object> login(String hid, String password) {
@@ -36,16 +51,49 @@ public class HotelServiceImpl implements HotelService {
             HotelInfo info = hotelInfoRepository.findOne(hid);
             if (info == null) {
                 map.put("success", false);
-                map.put("error", "酒店编号错误！");
+                map.put("error", "用户名错误！");
             } else {
                 if (!Utils.md5(password).equals(info.getPassword())) {
                     map.put("success", false);
-                    map.put("error", "账号或密码错误！");
+                    map.put("error", "密码错误！");
                 } else {
                     map.put("success", true);
                     map.put("hid", hid);
                     map.put("hname", info.getName());
                 }
+            }
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> password(String hid, String old, String password, String passwordAgain) {
+        Map<String, Object> map = new HashMap<>();
+
+        old = old.trim();
+        password = password.trim();
+        passwordAgain = passwordAgain.trim();
+
+
+        if (hid == null || "".equalsIgnoreCase(hid)) {
+            map.put("success", false);
+            map.put("error", "尚未登陆！");
+        } else if (old.length() == 0 || password.length() == 0 || passwordAgain.length() == 0) {
+            map.put("success", false);
+            map.put("error", "请把密码填写完整！");
+        } else if (!password.equals(passwordAgain)) {
+            map.put("success", false);
+            map.put("error", "输入的新密码不匹配！");
+        } else {
+            HotelInfo info = hotelInfoRepository.findOne(hid);
+            old = Utils.md5(old);
+            if (!info.getPassword().equals(old)) {
+                map.put("success", false);
+                map.put("error", "旧密码不正确！");
+            } else {
+                info.setPassword(Utils.md5(password));
+                hotelInfoRepository.saveAndFlush(info);
+                map.put("success", true);
             }
         }
         return map;
@@ -65,11 +113,55 @@ public class HotelServiceImpl implements HotelService {
             return map;
         }
 
-        HotelInfo info = hotelInfoRepository.findOne(hid);
-        info.setName(name);
-        info.setLocation(location);
-        info.setPhone(phone);
-        hotelInfoRepository.saveAndFlush(info);
+        Apply apply = new Apply();
+        apply.setApplyid(NumberFormater.formatId(NumberFormater.string2Integer(applyRepository.getMaxApplyid()) + 1));
+        apply.setName(name);
+        apply.setLocation(location);
+        apply.setPhone(phone);
+        apply.setBankid("-1");
+        apply.setHid(hid);
+        applyRepository.saveAndFlush(apply);
+
+        map.put("success", true);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> applyHotel(String name, String location, String phone, String bankid, String bankpsd) {
+        Map<String, Object> map = new HashMap<>();
+        name = name.trim();
+        location = location.trim();
+        phone = phone.trim();
+        bankid = bankid.trim();
+        bankpsd = bankpsd.trim();
+
+        Bank bank = bankRepository.findOne(bankid);
+
+        if (name.length() == 0 || location.length() == 0 || phone.length() == 0 || bankid.length() == 0 || bankpsd.length() == 0) {
+            map.put("success", false);
+            map.put("error", "请把信息填写完整！");
+            return map;
+        } else if (bank == null) {
+            map.put("success", false);
+            map.put("error", "银行账户不存在！");
+            return map;
+        } else if (fianceService.bankOccupy(bankid)) {
+            map.put("success", false);
+            map.put("error", "银行账户已被占用！");
+            return map;
+        } else if (!Utils.md5(bankpsd).equalsIgnoreCase(bank.getPassword())) {
+            map.put("success", false);
+            map.put("error", "银行账户密码不匹配！");
+            return map;
+        }
+
+        Apply apply = new Apply();
+        apply.setApplyid(NumberFormater.formatId(NumberFormater.string2Integer(applyRepository.getMaxApplyid()) + 1));
+        apply.setName(name);
+        apply.setLocation(location);
+        apply.setPhone(phone);
+        apply.setBankid(bankid);
+        applyRepository.saveAndFlush(apply);
 
         map.put("success", true);
         return map;
@@ -144,6 +236,71 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public List<HotelPlan> getAvail(String hid, Date date) {
         return hotelPlanRepository.findByHidDate(hid, date);
+    }
+
+    @Override
+    public List<StatisticVO> getRoomStatistic(String hid, Date date) {
+        List<HotelPlan> plans = this.getAvail(hid, date);
+        List<StatisticVO> list = new ArrayList<>();
+        for (HotelPlan plan : plans) {
+            StatisticVO vo = new StatisticVO(plan);
+
+            List<Book> books = bookService.getBooksByPlanid(vo.getPlanid());
+
+            //预定人数
+            vo.setBookTotal(books.size());
+            //预定并入住人数
+            int bookCheckin = 0;
+            for (Book book : books) {
+                if (book.getCheckin() != 0)
+                    ++bookCheckin;
+            }
+            vo.setBookCheckin(bookCheckin);
+            //非会员现金入住客户
+            List<Cash> cashInfos = cashRepository.nonVip(vo.getPlanid());
+            vo.setNonBookCheckin(cashInfos.size());
+
+            list.add(vo);
+        }
+        return list;
+    }
+
+    @Override
+    public HotelInfo getHotelInfo(String hid) {
+        return hotelInfoRepository.findOne(hid);
+    }
+
+    @Override
+    public FinanceVO makeFinanceAnalyse(String hid, int year, int month) {
+        FinanceVO financeVO = new FinanceVO();
+        double vipAccount = 0.0;
+        double vipCash = 0.0;
+        double nonVipCash = 0.0;
+
+        List<String> planids = hotelPlanRepository.getIdsByMonth(hid, year, month);
+        for (String planid : planids) {
+            //会员部分
+            List<Book> books = bookRepository.findByPlanid(planid);
+            for (Book book : books) {
+                //pay>0,并且没有cash记录
+                if (book.getPay() > 0 && cashRepository.findByBookid(book.getBookid()) == null) {
+                    vipAccount += book.getPay();
+                    //pay>0,并且有cash记录
+                } else if (book.getPay() > 0 && cashRepository.findByBookid(book.getBookid()) != null) {
+                    vipCash += book.getPay();
+                }
+            }
+            //非会员部分
+            List<Cash> cashes = cashRepository.nonVip(planid);
+            for (Cash cash : cashes) {
+                nonVipCash += cash.getAmount();
+            }
+        }
+
+        financeVO.setVipAccount(NumberFormater.doubleStander(vipAccount));
+        financeVO.setVipCash(NumberFormater.doubleStander(vipCash));
+        financeVO.setNonVipCash(NumberFormater.doubleStander(nonVipCash));
+        return financeVO;
     }
 
 }

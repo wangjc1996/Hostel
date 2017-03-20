@@ -14,6 +14,8 @@ public interface VipService {
 
     VipInfo getVipById(String vid);
 
+    VipInfo getVipByPhone(String phone);
+
     Map<String, Object> password(String vid, String old, String password, String passwordAgain);
 
     void statusRecheck(String vid);

@@ -28,7 +28,7 @@
             <label for="js-phone-input" class="normal-input-label">联系电话</label>
             <input class="normal-input" id="js-phone-input" value="${info.phone}"/>
             <div class="button-group right-floated">
-                <button class="button btn-submit" onclick="submit()">修改</button>
+                <button class="button btn-submit" onclick="submit()">提交申请</button>
             </div>
             <div class="clear-fix"></div>
         </div>
@@ -49,7 +49,7 @@
     function submit() {
         $.ajax({
             type: "POST",
-            url: "/admin/shop/edit",
+            url: "/admin/hotel/edit",
             data: {
                 hid: $("#js-id-input").val(),
                 name: $("#js-name-input").val(),
@@ -60,7 +60,7 @@
                 if (data["success"] == false) {
                     toaster(data["error"], "error");
                 } else {
-                    toaster("编辑成功~", "success");
+                    toaster("申请提交成功~", "success");
                     setTimeout(function () {
                         window.location.href = "/admin/info";
                     }, 1000);

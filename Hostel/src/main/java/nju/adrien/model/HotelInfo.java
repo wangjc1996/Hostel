@@ -16,6 +16,7 @@ public class HotelInfo {
     private String location;
     private String phone;
     private String password;
+    private String bankid;
 
     @Id
     @Column(name = "hid")
@@ -63,6 +64,15 @@ public class HotelInfo {
         this.password = password;
     }
 
+    @Column(name = "bankid")
+    public String getBankid() {
+        return bankid;
+    }
+
+    public void setBankid(String bankid) {
+        this.bankid = bankid;
+    }
+
     @Override
     public String toString() {
         return "HotelInfo{" +
@@ -71,6 +81,7 @@ public class HotelInfo {
                 ", location='" + location + '\'' +
                 ", phone='" + phone + '\'' +
                 ", password='" + password + '\'' +
+                ", bankid='" + bankid + '\'' +
                 '}';
     }
 }

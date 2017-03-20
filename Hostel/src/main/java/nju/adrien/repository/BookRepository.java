@@ -15,4 +15,6 @@ public interface BookRepository extends JpaRepository<Book, String> {
     @Query("select a from Book a where vid=?1")
     List<Book> findByVid(String vid);
 
+    @Query("select a from Book a where a.planid = ?1 ")
+    List<Book> findByPlanid(String planid);
 }

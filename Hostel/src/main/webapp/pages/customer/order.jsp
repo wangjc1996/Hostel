@@ -57,8 +57,8 @@
                                     </td>
                                     <td>
                                         <c:choose>
-                                            <c:when test="${item.chenkin == 0}">未入住</c:when>
-                                            <c:when test="${item.chenkin > 0}">已入住</c:when>
+                                            <c:when test="${item.checkin == 0}">未入住</c:when>
+                                            <c:when test="${item.checkin > 0}">已入住</c:when>
                                         </c:choose>
                                     </td>
                                     <td>
@@ -71,10 +71,10 @@
                                             <%--<button class="button" onclick="window.location.href--%>
                                             <%--='/user/order/detail?id=${item.id}'">详细</button>--%>
                                         <c:choose>
-                                            <c:when test="${item.chenkin == 0}">
+                                            <c:when test="${item.checkin == 0}">
                                                 <button class="button" onclick="cancel(this)">取消</button>
                                             </c:when>
-                                            <c:when test="${item.chenkin > 0}">无</c:when>
+                                            <c:when test="${item.checkin > 0}">无</c:when>
                                         </c:choose>
                                     </td>
                                 </tr>
