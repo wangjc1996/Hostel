@@ -14,9 +14,6 @@ import javax.servlet.http.HttpSession;
 import java.util.Enumeration;
 import java.util.Map;
 
-/**
- * Created by JiachenWang on 2017/3/8.
- */
 @Controller
 public class AuthorityController {
 
@@ -37,28 +34,30 @@ public class AuthorityController {
 
     /**
      * 后台登陆
+     *
      * @return
      */
-    @RequestMapping(value="/admin/login", method= RequestMethod.GET)
+    @RequestMapping(value = "/admin/login", method = RequestMethod.GET)
     public String adminLogin() {
         return "admin/auth/login";
     }
 
     /**
      * 后台登陆
+     *
      * @return
      */
-    @RequestMapping(value="/admin/login", method= RequestMethod.POST)
+    @RequestMapping(value = "/admin/login", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> postAdminLogin(String username, String password, HttpSession session) {
         Map<String, Object> hotelMap = hotelService.login(username, password);
-        if ((boolean)hotelMap.get("success")) {
+        if ((boolean) hotelMap.get("success")) {
             session.setAttribute("hid", hotelMap.get("hid"));
             session.setAttribute("hname", hotelMap.get("hname"));
             return hotelMap;
         }
         Map<String, Object> managerMap = managerService.login(username, password);
-        if ((boolean)managerMap.get("success")) {
+        if ((boolean) managerMap.get("success")) {
             session.setAttribute("admin", "admin");
         }
         return managerMap;

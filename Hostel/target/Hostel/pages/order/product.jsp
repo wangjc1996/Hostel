@@ -26,6 +26,11 @@
                 </div>
                 <div class="clear-fix"></div>
             </div>
+            <div class="search">
+                <input class="input" id="js-date-input" type="text" placeholder="入住日期YYYY-MM-DD">
+                <button class="btn-search" id="js-btn-search" onclick="getPlansByDate()">搜索</button>
+            </div>
+            <div class="clear-fix"></div>
             <c:choose>
                 <c:when test="${planItems.size() == 0}">
                     <h1>无房源计划</h1>
@@ -57,8 +62,11 @@
                                     <td>${item.type}</td>
                                     <td>￥ ${item.price}</td>
                                     <td>${item.available}</td>
-                                    <td><input type="text" placeholder="&分割"
-                                               class="number-input"/></td>
+                                    <td>
+                                        <input type="text" placeholder="入住人1" class="number-input"/>
+                                        <br/>
+                                        <input type="text" placeholder="入住人2" class="number-input"/>
+                                    </td>
                                     <td>
                                         <c:if test="${item.available > 0}">
                                             <button class="button button-book">立即预定</button>
@@ -113,8 +121,12 @@
         $(".button-book").click(function () {
             var tds = $(this).parents("tr").children();
             var planid = tds.eq(1).text();
-            var names = tds.eq(6).children().eq(0).val();
-
+            var name1 = tds.eq(6).children().eq(0).val();
+            var name2 = tds.eq(6).children().eq(2).val();
+            var names = name1 + name2;
+            if (name1 != "" && name2 != "") {
+                names = name1 + "-" + name2;
+            }
             $.ajax({
                 type: "POST",
                 async: false,
@@ -160,6 +172,27 @@
         });
 
     }
+
+    function getPlansByDate() {
+        $.ajax({
+            type: "GET",
+            url: "/product/date",
+            data: {
+                hid:  ${product.hid},
+                date: $("#js-date-input").val(),
+            },
+            success: function (data) {
+                toaster("刷新成功！", "success");
+                setTimeout(function () {
+                    window.location.href = "/product/date?hid=" + ${product.hid} +"&date=" + $("#js-date-input").val();
+                }, 1000);
+            },
+            error: function () {
+                toaster("服务器出现问题，请稍微再试！", "error");
+            }
+        });
+    }
+
 </script>
 </html>
 

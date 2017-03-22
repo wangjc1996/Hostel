@@ -17,9 +17,6 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by JiachenWang on 2017/3/15.
- */
 @Controller
 public class PlanController {
 

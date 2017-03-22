@@ -7,6 +7,7 @@ import nju.adrien.service.FianceService;
 import nju.adrien.service.HotelService;
 import nju.adrien.util.NumberFormater;
 import nju.adrien.util.Utils;
+import nju.adrien.vo.BillVO;
 import nju.adrien.vo.FinanceVO;
 import nju.adrien.vo.StatisticVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -161,6 +162,7 @@ public class HotelServiceImpl implements HotelService {
         apply.setLocation(location);
         apply.setPhone(phone);
         apply.setBankid(bankid);
+        apply.setHid("-1");
         applyRepository.saveAndFlush(apply);
 
         map.put("success", true);
@@ -301,6 +303,34 @@ public class HotelServiceImpl implements HotelService {
         financeVO.setVipCash(NumberFormater.doubleStander(vipCash));
         financeVO.setNonVipCash(NumberFormater.doubleStander(nonVipCash));
         return financeVO;
+    }
+
+    @Override
+    public List<BillVO> makeFinanceList(String hid, int year, int month) {
+        List<BillVO> list = new ArrayList<>();
+
+        List<String> planids = hotelPlanRepository.getIdsByMonth(hid, year, month);
+        for (String planid : planids) {
+            HotelPlan plan = this.getPlan(planid);
+            //会员部分
+            List<Book> books = bookRepository.findByPlanid(planid);
+            for (Book book : books) {
+                //pay>0,并且没有cash记录
+                if (book.getPay() > 0 && cashRepository.findByBookid(book.getBookid()) == null) {
+                    list.add(new BillVO(plan.getDate(), "线上", book.getBookid(), "-", book.getNames(), book.getPay()));
+                    //pay>0,并且有cash记录
+                } else if (book.getPay() > 0 && cashRepository.findByBookid(book.getBookid()) != null) {
+                    list.add(new BillVO(plan.getDate(),"现金", book.getBookid(), cashRepository.findByBookid(book.getBookid()).getCashid(), book.getNames(), book.getPay()));
+                }
+            }
+            //非会员部分
+            List<Cash> cashes = cashRepository.nonVip(planid);
+            for (Cash cash : cashes) {
+                list.add(new BillVO(plan.getDate(),"现金", "-", cash.getCashid(), cash.getNames(), cash.getAmount()));
+            }
+        }
+
+        return list;
     }
 
 }

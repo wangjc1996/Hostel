@@ -74,6 +74,7 @@ public class AccountServiceImpl implements VipService {
             vip.setName(name);
             vip.setPhone(phone);
             vip.setPassword(Utils.md5(password));
+            vip.setBankid(bankid);
             VipLevel level = new VipLevel();
             level.defaultValue();
             level.setVid(vid);

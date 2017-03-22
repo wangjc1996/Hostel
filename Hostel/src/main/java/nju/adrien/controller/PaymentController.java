@@ -47,6 +47,7 @@ public class PaymentController {
     @ResponseBody
     public Map<String, Object> bookCash(String planid, String names, HttpSession session) {
         planid = NumberFormater.formatLongId(NumberFormater.string2Integer(planid));
+        System.out.println((String) session.getAttribute("vip_vid") + "hhh");
         BookVO book = productService.getBook(planid, names, (String) session.getAttribute("vip_vid"));
         //(入住支付现金)生成订单,房源数量-1
         return bookService.bookCash(book);

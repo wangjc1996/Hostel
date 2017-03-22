@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="admin-navbar">
     <div class="content">
-        <span class="navbar-title">HOSTEL后台</span>
+        <span class="navbar-title">HOSTEL商家</span>
         <ul id="admin-nav-items" class="nav-items">
             <li class="nav-item" onclick="window.location.href='/admin/info'">店面信息</li>
             <li class="nav-item" onclick="window.location.href='/admin/hall'">入住登记</li>

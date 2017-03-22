@@ -14,6 +14,7 @@ import nju.adrien.vo.IndexProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,6 +88,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<HotelPlan> getProductPlans(String hid) {
         return hotelPlanRepository.findByHid(hid);
+    }
+
+    @Override
+    public List<HotelPlan> getProductPlans(String hid, Date date) {
+        return hotelPlanRepository.findByHidDate(hid, date);
     }
 
     @Override

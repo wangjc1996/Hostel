@@ -51,7 +51,9 @@
 
             <div class="normal-div">我的账户余额：
                 <span class="number">${info.level.balance}
-                <button class="button" onclick="window.location.href='/user/recharge'">立即充值</button>
+                    <c:if test="${info.state != 'invalid'}">
+                        <button class="button" onclick="window.location.href='/user/recharge'">立即充值</button>
+                    </c:if>
                 </span>
             </div>
             <div class="normal-div">我的积分剩余：

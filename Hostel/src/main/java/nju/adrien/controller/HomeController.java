@@ -10,13 +10,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by JiachenWang on 2017/3/8.
- */
 @Controller
 public class HomeController {
 
@@ -44,8 +42,22 @@ public class HomeController {
         return modelAndView;
     }
 
+
+    //酒店页面
+    @RequestMapping(value = "/product/date", method = RequestMethod.GET)
+    public ModelAndView productDatePage(String hid, Date date) {
+        ModelAndView modelAndView = new ModelAndView("order/product");
+        IndexProduct product = productService.getProductInfo(hid);
+        List<HotelPlan> planItems = productService.getProductPlans(hid, date);
+
+        modelAndView.addObject("product", product);
+        modelAndView.addObject("planItems", planItems);
+
+        return modelAndView;
+    }
+
     // 获得产品、查找产品
-    @RequestMapping(value="/getProducts", method= RequestMethod.GET)
+    @RequestMapping(value = "/getProducts", method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getProducts(String key) {
         Map<String, Object> map = new HashMap<>();

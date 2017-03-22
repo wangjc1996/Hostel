@@ -89,6 +89,7 @@ public class HotelController {
         String hid = (String) session.getAttribute("hid");
         Date date = new Date(System.currentTimeMillis());
         modelAndView.addObject("vo", hotelService.makeFinanceAnalyse(hid, date.getYear() + 1900, date.getMonth() + 1));
+        modelAndView.addObject("list", hotelService.makeFinanceList(hid, date.getYear() + 1900, date.getMonth() + 1));
         return modelAndView;
     }
 

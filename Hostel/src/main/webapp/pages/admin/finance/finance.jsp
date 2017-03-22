@@ -25,9 +25,10 @@
                     var myChart = echarts.init(document.getElementById('chart-area'));
                     var d = new Date();
                     var month = d.getMonth() + 1;
+                    var vipTotal = ${vo.vipAccount+vo.vipCash};
                     option = {
                         title: {
-                            text: month+'月销售额分析（单位：RMB）',
+                            text: month + '月销售额分析（单位：RMB）',
                             left: 'center',
                             top: 25,
                             textStyle: {
@@ -42,12 +43,12 @@
                         legend: {
                             orient: 'vertical',
                             x: 'left',
-                            data:['会员账户','会员现金','非会员现金']
+                            data: ['会员账户', '会员现金', '非会员现金']
                         },
                         series: [
                             {
-                                name:'销售额',
-                                type:'pie',
+                                name: '销售额',
+                                type: 'pie',
                                 selectedMode: 'single',
                                 radius: [0, '30%'],
 
@@ -61,26 +62,61 @@
                                         show: false
                                     }
                                 },
-                                data:[
-                                    {value:${vo.vipAccount+vo.vipCash}, name:'会员', selected:true},
-                                    {value:${vo.nonVipCash}, name:'非会员'}
+                                data: [
+                                    {value: vipTotal.toFixed(2), name: '会员', selected: true},
+                                    {value:${vo.nonVipCash}, name: '非会员'}
                                 ]
                             },
                             {
-                                name:'支付渠道',
-                                type:'pie',
+                                name: '支付渠道',
+                                type: 'pie',
                                 radius: ['40%', '55%'],
 
-                                data:[
-                                    {value:${vo.vipAccount}, name:'会员账户'},
-                                    {value:${vo.vipCash}, name:'会员现金'},
-                                    {value:${vo.nonVipCash}, name:'非会员现金'}
+                                data: [
+                                    {value:${vo.vipAccount}, name: '会员账户'},
+                                    {value:${vo.vipCash}, name: '会员现金'},
+                                    {value:${vo.nonVipCash}, name: '非会员现金'}
                                 ]
                             }
                         ]
                     };
                     myChart.setOption(option);
                 </script>
+                <div class="clear-fix"></div>
+                <c:choose>
+                    <c:when test="${list.size() == 0}">
+                        <h1>无报表</h1>
+                    </c:when>
+                    <c:when test="${list.size() > 0}">
+                        <div class="table-container">
+                            <table id="js-table" class="table table-striped table-bordered">
+                                <thead>
+                                <tr>
+                                    <th width="15%">日期</th>
+                                    <th width="15%">类型</th>
+                                    <th width="25%">预订单</th>
+                                    <th width="25%">现金单</th>
+                                    <th width="15%">入住人</th>
+                                    <th width="15%">金额</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach items="${list}" var="item">
+                                    <tr>
+                                        <td>${item.date}</td>
+                                        <td>${item.type}</td>
+                                        <td>${item.bookid}</td>
+                                        <td>${item.cashid}</td>
+                                        <td>${item.names}</td>
+                                        <td>${item.amount}</td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                    </c:when>
+                </c:choose>
+                <div class="clear-fix"></div>
             </div>
 
         </div>

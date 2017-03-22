@@ -2,6 +2,7 @@ package nju.adrien.service;
 
 import nju.adrien.model.HotelInfo;
 import nju.adrien.model.HotelPlan;
+import nju.adrien.vo.BillVO;
 import nju.adrien.vo.FinanceVO;
 import nju.adrien.vo.StatisticVO;
 
@@ -42,4 +43,6 @@ public interface HotelService {
     HotelInfo getHotelInfo(String hid);
 
     FinanceVO makeFinanceAnalyse(String hid, int year, int month);
+
+    List<BillVO> makeFinanceList(String hid, int year, int month);
 }

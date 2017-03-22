@@ -192,13 +192,12 @@ public class BookServiceImpl implements BookService {
         //反钱
         if (money > 0) {
             level.setBalance(level.getBalance() + money);
-        } else if (money < 0) {
-            money = -money;
+            //积分，消费总金额
+            level.setPoint(level.getPoint() - (int) money);
+            level.setIntegration(level.getIntegration() - money);
+            vipLevelRepository.saveAndFlush(level);
         }
-        //积分，消费总金额
-        level.setPoint(level.getPoint() - (int) money);
-        level.setIntegration(level.getIntegration() - money);
-        vipLevelRepository.saveAndFlush(level);
+
         //删除订单
         bookRepository.delete(book);
 

@@ -94,6 +94,7 @@ public class HallController {
     // 非会员现金入住界面
     @RequestMapping(value = "/admin/hall/nonVipCheckin", method = RequestMethod.GET)
     public ModelAndView nonVipCheckinPage(String planid) {
+        planid = NumberFormater.formatLongId(NumberFormater.string2Integer(planid));
         ModelAndView modelAndView = new ModelAndView("admin/hall/non_vip");
         modelAndView.addObject("plan", hotelService.getPlan(planid));
         return modelAndView;
@@ -103,6 +104,7 @@ public class HallController {
     @RequestMapping(value = "/admin/hall/nonVipCheckin", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> nonVipCheckin(String planid, String names) {
+        planid = NumberFormater.formatLongId(NumberFormater.string2Integer(planid));
         return hallService.nonVipCheckin(planid, names);
     }
 
