@@ -24,7 +24,7 @@ public class HomeController {
     //请求主界面:显示FrontPage
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView frontPage() {
-        ModelAndView modelAndView = new ModelAndView("index");
+        ModelAndView modelAndView = new ModelAndView("customer/index");
         return modelAndView;
     }
 

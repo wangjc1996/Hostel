@@ -10,8 +10,8 @@
     <script src="${pageContext.request.contextPath}/assets/js/script.js"></script>
 </head>
 <body>
-<%@include file="common/navbar.jsp" %>
-<%@include file="common/header.jsp" %>
+<%@include file="../common/navbar.jsp" %>
+<%@include file="../common/header.jsp" %>
 
 <div class="wrapper">
 
